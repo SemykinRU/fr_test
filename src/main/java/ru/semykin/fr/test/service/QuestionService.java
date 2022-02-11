@@ -2,13 +2,8 @@ package ru.semykin.fr.test.service;
 
 import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.semykin.fr.test.dto.PollDto;
 import ru.semykin.fr.test.dto.QuestionDto;
-import ru.semykin.fr.test.entity.Poll;
 import ru.semykin.fr.test.entity.Question;
 import ru.semykin.fr.test.exception.NotFoundException;
 import ru.semykin.fr.test.mapper.QuestionMapper;
@@ -22,36 +17,33 @@ public class QuestionService {
 
     private final QuestionRepository repository;
 
-    private final PollService pollService;
-
     private static final QuestionMapper questionMapper = Mappers.getMapper(QuestionMapper.class);
 
-    public List<QuestionDto> getAllQuestionDto (Long pollId) {
+    public List<QuestionDto> getAllQuestionDtoByPollId(Long pollId) {
         List<Question> questions = repository.findAllByPollId(pollId);
         return questionMapper.toQuestionDtoList(questions);
     }
 
-    public QuestionDto getQuestionById (Long id) {
+    public QuestionDto getOneQuestionById(Long id) {
         Question question = repository.findById(id).orElseThrow(NotFoundException::new);
         return questionMapper.toQuestionDto(question);
     }
 
-    public QuestionDto addNewQuestion (QuestionDto questionDto, Long pollId) {
+    public QuestionDto addNewQuestion(QuestionDto questionDto) {
         Question question = questionMapper.toQuestionEntity(questionDto);
-        Poll poll = pollService.getPollById(pollId);
-        question.setPoll(poll);
         Long id = repository.save(question).getId();
         questionDto.setId(id);
         return questionDto;
     }
 
-    public PollDto updateQuestion (QuestionDto questionDto, Long pollId) {
+    public QuestionDto updateQuestion(QuestionDto questionDto) {
         Question question = questionMapper.toQuestionEntity(questionDto);
         repository.save(question);
-        return pollService.getPollDtoById(pollId);
+        return questionDto;
     }
 
-    public void deletedQuestion (Long id) {
+    public void deletedQuestion(Long id) {
         repository.deleteById(id);
     }
+
 }

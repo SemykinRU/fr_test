@@ -19,30 +19,30 @@ public class AnswerService {
 
     private static final AnswerMapper mapper = Mappers.getMapper(AnswerMapper.class);
 
-    public List<AnswerDto> getAllAnswerDto (Long id) {
-        List<Answer> answers = repository.findAllByQuestionId(id);
+    public List<AnswerDto> getAllAnswerDtoByQuestId(Long qId) {
+        List<Answer> answers = repository.findAllByQuestionId(qId);
         return mapper.toAnswerDtoList(answers);
     }
 
-    public AnswerDto getAnswerById (Long id) {
+    public AnswerDto getAnswerById(Long id) {
         Answer answer = repository.findById(id).orElseThrow(NotFoundException::new);
         return mapper.toAnswerDto(answer);
     }
 
-    public AnswerDto addNewAnswer (AnswerDto answerDto) {
+    public AnswerDto addNewAnswer(AnswerDto answerDto) {
         Answer answer = mapper.toAnswerEntity(answerDto);
         Long id = repository.save(answer).getId();
         answerDto.setId(id);
         return answerDto;
     }
 
-    public AnswerDto updateAnswer (AnswerDto answerDto) {
+    public AnswerDto updateAnswer(AnswerDto answerDto) {
         Answer answer = mapper.toAnswerEntity(answerDto);
         repository.save(answer);
         return answerDto;
     }
 
-    public void deletedAnswer (Long id) {
+    public void deletedAnswer(Long id) {
         repository.deleteById(id);
     }
 

@@ -22,5 +22,4 @@ public interface PollMapper {
     @Mapping(target = "questions", ignore = true)
     List<Poll> toPollEntityList(Iterable<PollDto> dto);
 
-
 }

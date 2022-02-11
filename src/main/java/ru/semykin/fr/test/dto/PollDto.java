@@ -3,7 +3,6 @@ package ru.semykin.fr.test.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-import ru.semykin.fr.test.entity.Question;
 
 import java.time.LocalDateTime;
 import java.util.List;

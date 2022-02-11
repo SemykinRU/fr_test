@@ -25,20 +25,14 @@ public class AdminController {
 
     private final AnswerService answerService;
 
-
     @GetMapping(value = "/polls")
     public List<PollDto> getAllPolls() {
         return pollService.getAllPollsDto();
     }
 
-    @GetMapping(value =  "/polls/{id}")
+    @GetMapping(value = "/polls/{id}")
     public PollDto getOnePollById(@PathVariable Long id) {
         return pollService.getPollDtoById(id);
-    }
-
-    @PutMapping(value = "/polls")
-    public PollDto updatePoll(@RequestBody PollDto pollDto) {
-        return pollService.updatePoll(pollDto);
     }
 
     @PostMapping(value = "/polls")
@@ -46,28 +40,63 @@ public class AdminController {
         return pollService.addNewPoll(pollDto);
     }
 
-    @DeleteMapping(value = "/polls/{id}")
-    public void deletedPoll(@PathVariable Long id) {
+    @PutMapping(value = "/polls")
+    public PollDto updatePoll(@RequestBody PollDto pollDto) {
+        return pollService.updatePoll(pollDto);
+    }
+
+    @DeleteMapping(value = "/polls}")
+    public void deletedPoll(@RequestParam Long id) {
         pollService.deletedPoll(id);
     }
 
-    @GetMapping(value = "/polls/{pollId}/questions")
-    public List<QuestionDto> getAllQuestions(@PathVariable Long pollId) {
-        return questionService.getAllQuestionDto(pollId);
+    @GetMapping(value = "/questions")
+    public List<QuestionDto> getAllQuestionsByPollId(@RequestParam Long id) {
+        return questionService.getAllQuestionDtoByPollId(id);
     }
 
-    @PostMapping(value = "/polls/{pollId}/questions")
-    public QuestionDto addNewQuestion(@RequestBody QuestionDto questionDto, @PathVariable Long pollId) {
-        return questionService.addNewQuestion(questionDto, pollId);
+    @GetMapping(value = "/questions/{id}")
+    public QuestionDto getOneQuestionsById(@PathVariable Long id) {
+        return questionService.getOneQuestionById(id);
     }
 
-    @PutMapping(value = "/polls/{pollId}/questions")
-    public PollDto updateQuestion(@RequestBody QuestionDto questionDto, @PathVariable Long pollId) {
-        return questionService.updateQuestion(questionDto, pollId);
+    @PostMapping(value = "/questions")
+    public QuestionDto addNewQuestion(@RequestBody QuestionDto questionDto) {
+        return questionService.addNewQuestion(questionDto);
     }
 
-    @DeleteMapping(value = "/questions/{qId}")
-    public void deletedQuestion(@PathVariable Long qId) {
-        questionService.deletedQuestion(qId);
+    @PutMapping(value = "/questions")
+    public QuestionDto updateQuestion(@RequestBody QuestionDto questionDto) {
+        return questionService.updateQuestion(questionDto);
+    }
+
+    @DeleteMapping(value = "/questions")
+    public void deletedQuestionById(@RequestParam Long id) {
+        questionService.deletedQuestion(id);
+    }
+
+    @GetMapping(value = "/answers")
+    public List<AnswerDto> getAllAnswerByQuestId(@RequestParam Long id) {
+        return answerService.getAllAnswerDtoByQuestId(id);
+    }
+
+    @GetMapping(value = "/answers/{id}")
+    public AnswerDto getAnswerById(@PathVariable Long id) {
+        return answerService.getAnswerById(id);
+    }
+
+    @PostMapping(value = "/answers")
+    public AnswerDto addNewAnswer(@RequestBody AnswerDto answerDto) {
+        return answerService.addNewAnswer(answerDto);
+    }
+
+    @PutMapping(value = "/answers")
+    public AnswerDto updateAnswers(@RequestBody AnswerDto answerDto) {
+        return answerService.updateAnswer(answerDto);
+    }
+
+    @DeleteMapping(value = "/answers")
+    public void deletedAnswerById(@RequestParam Long id) {
+        answerService.deletedAnswer(id);
     }
 }
