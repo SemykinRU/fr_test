@@ -2,6 +2,7 @@ package ru.semykin.fr.test.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.semykin.fr.test.entity.QuestionType;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class QuestionDto {
 
     private String title;
 
-    private String type;
+    private QuestionType type;
 
     private List<AnswerDto> answers;
 

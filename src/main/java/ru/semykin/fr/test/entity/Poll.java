@@ -24,7 +24,7 @@ public class Poll {
 
     private String description;
 
-    @OneToMany(mappedBy = "poll", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "poll", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Question> questions;
 
 }

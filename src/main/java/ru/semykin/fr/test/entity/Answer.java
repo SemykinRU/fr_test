@@ -16,7 +16,7 @@ public class Answer {
 
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Question question;
 
 }

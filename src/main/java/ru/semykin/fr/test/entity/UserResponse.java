@@ -3,10 +3,7 @@ package ru.semykin.fr.test.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "user_response")
@@ -20,8 +17,10 @@ public class UserResponse {
 
     private LocalDateTime createDate;
 
-    private Long userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    private Long pollId;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Poll poll;
 
 }

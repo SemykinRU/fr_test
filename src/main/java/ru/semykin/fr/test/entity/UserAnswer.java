@@ -11,9 +11,14 @@ import javax.persistence.*;
 public class UserAnswer {
 
     @Id
-    private Long userResponseId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Long answerId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserResponse userResponse;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Answer answer;
 
     private String answerText;
 

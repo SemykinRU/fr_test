@@ -27,17 +27,17 @@ public class AdminController {
 
     @GetMapping(value = "/polls")
     public List<PollDto> getAllPolls() {
-        return pollService.getAllPollsDto();
+        return pollService.findAllPollsDto();
     }
 
-    @GetMapping(value = "/polls/{id}")
-    public PollDto getOnePollById(@PathVariable Long id) {
-        return pollService.getPollDtoById(id);
+    @GetMapping(value = "/polls/{pollId}")
+    public PollDto getOnePollById(@PathVariable Long pollId) {
+        return pollService.findPollDtoById(pollId);
     }
 
     @PostMapping(value = "/polls")
     public PollDto addNewPoll(@RequestBody PollDto pollDto) {
-        return pollService.addNewPoll(pollDto);
+        return pollService.savePoll(pollDto);
     }
 
     @PutMapping(value = "/polls")
@@ -45,24 +45,25 @@ public class AdminController {
         return pollService.updatePoll(pollDto);
     }
 
-    @DeleteMapping(value = "/polls}")
-    public void deletedPoll(@RequestParam Long id) {
-        pollService.deletedPoll(id);
+    @DeleteMapping(value = "/polls")
+    public void deletedPoll(@RequestParam Long pollId) {
+        pollService.deletedPoll(pollId);
     }
 
     @GetMapping(value = "/questions")
-    public List<QuestionDto> getAllQuestionsByPollId(@RequestParam Long id) {
-        return questionService.getAllQuestionDtoByPollId(id);
+    public List<QuestionDto> getAllQuestionsByPollId(@RequestParam Long pollId) {
+        return questionService.findAllQuestionDtoByPollId(pollId);
     }
 
-    @GetMapping(value = "/questions/{id}")
-    public QuestionDto getOneQuestionsById(@PathVariable Long id) {
-        return questionService.getOneQuestionById(id);
+    @GetMapping(value = "/questions/{qId}")
+    public QuestionDto getOneQuestionsById(@PathVariable Long qId) {
+        return questionService.findOneQuestionDtoById(qId);
     }
 
     @PostMapping(value = "/questions")
-    public QuestionDto addNewQuestion(@RequestBody QuestionDto questionDto) {
-        return questionService.addNewQuestion(questionDto);
+    public QuestionDto addNewQuestion(@RequestParam Long pollId,
+                                      @RequestBody QuestionDto questionDto) {
+        return questionService.saveQuestion(questionDto, pollId);
     }
 
     @PutMapping(value = "/questions")
@@ -77,17 +78,18 @@ public class AdminController {
 
     @GetMapping(value = "/answers")
     public List<AnswerDto> getAllAnswerByQuestId(@RequestParam Long id) {
-        return answerService.getAllAnswerDtoByQuestId(id);
+        return answerService.findAllAnswerDtoByQuestId(id);
     }
 
     @GetMapping(value = "/answers/{id}")
     public AnswerDto getAnswerById(@PathVariable Long id) {
-        return answerService.getAnswerById(id);
+        return answerService.findAnswerDtoById(id);
     }
 
     @PostMapping(value = "/answers")
-    public AnswerDto addNewAnswer(@RequestBody AnswerDto answerDto) {
-        return answerService.addNewAnswer(answerDto);
+    public AnswerDto addNewAnswer(@RequestParam Long qId,
+                                  @RequestBody AnswerDto answerDto) {
+        return answerService.saveAnswer(answerDto, qId);
     }
 
     @PutMapping(value = "/answers")

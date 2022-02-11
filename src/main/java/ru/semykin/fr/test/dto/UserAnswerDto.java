@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class UserAnswerDto {
 
+    private Long id;
+
     private Long userResponseId;
 
     private Long answerId;
