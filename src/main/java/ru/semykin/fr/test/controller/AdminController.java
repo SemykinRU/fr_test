@@ -1,5 +1,7 @@
 package ru.semykin.fr.test.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,88 +19,104 @@ import static ru.semykin.fr.test.util.ApplicationConstant.URL_ADMIN;
 @RestController
 @RequestMapping(value = "/" + URL_ADMIN, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
+@Api(value = "AdminController")
 public class AdminController {
 
-    private final QuestionService questionService;
-
     private final PollService pollService;
+
+    private final QuestionService questionService;
 
     private final AnswerService answerService;
 
     @GetMapping(value = "/polls")
-    public List<PollDto> getAllPolls() {
+    @ApiOperation("Поиск всех опросов.")
+    public List<PollDto> findAllPolls() {
         return pollService.findAllPollsDto();
     }
 
     @GetMapping(value = "/polls/{pollId}")
-    public PollDto getOnePollById(@PathVariable Long pollId) {
-        return pollService.findPollDtoById(pollId);
+    @ApiOperation("Поиск опроса по pollId - индификатор опроса.")
+    public PollDto findOnePollById(@PathVariable Long pollId) {
+        return pollService.findOnePollDtoById(pollId);
     }
 
     @PostMapping(value = "/polls")
-    public PollDto addNewPoll(@RequestBody PollDto pollDto) {
+    @ApiOperation("Добавление нового опроса.")
+    public PollDto saveNewPoll(@RequestBody PollDto pollDto) {
         return pollService.savePoll(pollDto);
     }
 
     @PutMapping(value = "/polls")
+    @ApiOperation("Редактирование опроса.")
     public PollDto updatePoll(@RequestBody PollDto pollDto) {
         return pollService.updatePoll(pollDto);
     }
 
     @DeleteMapping(value = "/polls")
-    public void deletedPoll(@RequestParam Long pollId) {
+    @ApiOperation("Удаление опроса по pollId - индификатор опроса.")
+    public void deletedPollById(@RequestParam Long pollId) {
         pollService.deletedPoll(pollId);
     }
 
     @GetMapping(value = "/questions")
-    public List<QuestionDto> getAllQuestionsByPollId(@RequestParam Long pollId) {
+    @ApiOperation("Поиск всех вопросов в опросе по pollId - индификатор опроса.")
+    public List<QuestionDto> findAllQuestionsByPollId(@RequestParam Long pollId) {
         return questionService.findAllQuestionDtoByPollId(pollId);
     }
 
     @GetMapping(value = "/questions/{qId}")
-    public QuestionDto getOneQuestionsById(@PathVariable Long qId) {
+    @ApiOperation("Поиск вопросов по qId - индификатор вопроса.")
+    public QuestionDto findOneQuestionsById(@PathVariable Long qId) {
         return questionService.findOneQuestionDtoById(qId);
     }
 
     @PostMapping(value = "/questions")
-    public QuestionDto addNewQuestion(@RequestParam Long pollId,
-                                      @RequestBody QuestionDto questionDto) {
+    @ApiOperation("Добавление нового вопроса в опрос по pollId - индификатор опроса.")
+    public QuestionDto saveNewQuestion(@RequestParam Long pollId,
+                                       @RequestBody QuestionDto questionDto) {
         return questionService.saveQuestion(questionDto, pollId);
     }
 
     @PutMapping(value = "/questions")
+    @ApiOperation("Редактирование вопроса.")
     public QuestionDto updateQuestion(@RequestBody QuestionDto questionDto) {
         return questionService.updateQuestion(questionDto);
     }
 
     @DeleteMapping(value = "/questions")
-    public void deletedQuestionById(@RequestParam Long id) {
-        questionService.deletedQuestion(id);
+    @ApiOperation("Удаление вопроса по qId - индификатор вопроса.")
+    public void deletedQuestionById(@RequestParam Long qId) {
+        questionService.deletedQuestion(qId);
     }
 
     @GetMapping(value = "/answers")
-    public List<AnswerDto> getAllAnswerByQuestId(@RequestParam Long id) {
-        return answerService.findAllAnswerDtoByQuestId(id);
+    @ApiOperation("Получение всех ответов в вопросе по qId - игдификатор вопроса.")
+    public List<AnswerDto> findAllAnswerByQuestId(@RequestParam Long qId) {
+        return answerService.findAllAnswerDtoByQuestId(qId);
     }
 
-    @GetMapping(value = "/answers/{id}")
-    public AnswerDto getAnswerById(@PathVariable Long id) {
-        return answerService.findAnswerDtoById(id);
+    @GetMapping(value = "/answers/{aId}")
+    @ApiOperation("Получение ответа aId - игдификатор ответа.")
+    public AnswerDto findAnswerById(@PathVariable Long aId) {
+        return answerService.findOneAnswerDtoById(aId);
     }
 
     @PostMapping(value = "/answers")
-    public AnswerDto addNewAnswer(@RequestParam Long qId,
-                                  @RequestBody AnswerDto answerDto) {
+    @ApiOperation("Добавление нового ответа в вопрос qId - игдификатор ответа.")
+    public AnswerDto saveNewAnswer(@RequestParam Long qId,
+                                   @RequestBody AnswerDto answerDto) {
         return answerService.saveAnswer(answerDto, qId);
     }
 
     @PutMapping(value = "/answers")
+    @ApiOperation("Редактирование ответа.")
     public AnswerDto updateAnswers(@RequestBody AnswerDto answerDto) {
         return answerService.updateAnswer(answerDto);
     }
 
     @DeleteMapping(value = "/answers")
-    public void deletedAnswerById(@RequestParam Long id) {
-        answerService.deletedAnswer(id);
+    @ApiOperation("Удаление ответа по aId - индификатор ответа.")
+    public void deletedAnswerById(@RequestParam Long aId) {
+        answerService.deletedAnswer(aId);
     }
 }

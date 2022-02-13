@@ -30,13 +30,13 @@ public class AnswerService {
         return mapper.toAnswerDtoList(answers);
     }
 
-    public AnswerDto findAnswerDtoById(Long id) {
-        final Answer answer = findOneEntityAnswerById(id);
+    public AnswerDto findOneAnswerDtoById(Long aId) {
+        final Answer answer = findOneEntityAnswerById(aId);
         return mapper.toAnswerDto(answer);
     }
 
-    public Answer findOneEntityAnswerById(Long id) {
-        return repository.findById(id).orElseThrow(NotFoundException::new);
+    public Answer findOneEntityAnswerById(Long aId) {
+        return repository.findById(aId).orElseThrow(NotFoundException::new);
     }
 
     public AnswerDto saveAnswer(AnswerDto answerDto, Long qId) {
@@ -48,17 +48,24 @@ public class AnswerService {
         return answerDto;
     }
 
-    public AnswerDto updateAnswer(AnswerDto answerDto) {
-        final Long id = answerDto.getId();
-        final String title = answerDto.getTitle();
-        final Answer answer = findOneEntityAnswerById(id);
-        answer.setTitle(title);
-        repository.save(answer);
-        return answerDto;
+    public List<AnswerDto> saveAllAnswers(List<AnswerDto> answers, Long qId) {
+        if (answers.isEmpty()) {
+            throw new NotFoundException();
+        }
+        for (var value : answers) {
+            saveAnswer(value, qId);
+        }
+        return answers;
     }
 
-    public void deletedAnswer(Long id) {
-        repository.deleteById(id);
+    public AnswerDto updateAnswer(AnswerDto answerDto) {
+        final Long id = answerDto.getId();
+        final Long qId = findOneEntityAnswerById(id).getQuestion().getId();
+        return saveAnswer(answerDto, qId);
+    }
+
+    public void deletedAnswer(Long aId) {
+        repository.deleteById(aId);
     }
 
 }

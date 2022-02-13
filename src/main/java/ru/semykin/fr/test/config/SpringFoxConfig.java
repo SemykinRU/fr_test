@@ -2,7 +2,6 @@ package ru.semykin.fr.test.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -20,5 +19,4 @@ public class SpringFoxConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-
 }
