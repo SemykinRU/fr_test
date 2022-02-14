@@ -1,57 +1,64 @@
 package ru.semykin.fr.test.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.semykin.fr.test.dto.PollDto;
-import ru.semykin.fr.test.dto.UserResultDto;
 import ru.semykin.fr.test.dto.UserResponseDto;
+import ru.semykin.fr.test.dto.UserResultDto;
 import ru.semykin.fr.test.service.UserControllerService;
 
 import java.util.List;
 
+import static ru.semykin.fr.test.util.ApplicationConstant.*;
+
 @RestController
-@RequestMapping(value = "/public", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = URL_PUBLIC, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-@Api(value = "UserController")
 public class UserController {
 
     private final UserControllerService userControllerService;
 
-    @GetMapping(value = "/polls/{userId}")
-    @ApiOperation("Получение активных опросов по userId - индификатор пользователя, " +
-            "если пользователь уже прошел опрос, он не попадет в список.")
-    public List<PollDto> findAllActivePollsByUserId(@PathVariable Long userId) {
+    @GetMapping(value = URL_POLLS_USER_ID)
+    @ApiOperation(API_ALL_ACTIVE_USER_POLL)
+    public List<PollDto> findAllActivePollsByUserId(@ApiParam(API_USER_ID)
+                                                    @PathVariable Long userId) {
         return userControllerService.findAllActivePollsDtoByUserId(userId);
     }
 
-    @GetMapping(value = "/polls")
-    @ApiOperation("Получение всех активных опросов на текущий момент.")
+    @GetMapping(value = URL_POLLS)
+    @ApiOperation(API_ALL_ACTIVE_POLLS)
     public List<PollDto> findAllActivePolls() {
         return userControllerService.findAllActivePolls();
     }
 
-    @PostMapping(value = "/polls")
-    @ApiOperation("Сохранение ответов пользователя на опрос. userId = индификатор пользователя, pollId = опрос.")
-    public UserResponseDto saveUserAnswer(@RequestParam Long userId,
-                                          @RequestParam Long pollId,
-                                          @RequestBody UserResponseDto userResponseDto) {
+    @PostMapping(value = URL_POLLS)
+    @ApiOperation(API_SAVE_USER_RESPONSE)
+    public UserResponseDto saveUserResponse(@ApiParam(API_USER_ID)
+                                            @RequestParam Long userId,
+                                            @ApiParam(API_POLL_ID)
+                                            @RequestParam Long pollId,
+                                            @ApiParam(API_USER_RESPONSE)
+                                            @RequestBody UserResponseDto userResponseDto) {
         return userControllerService.saveUserResponse(userId, pollId, userResponseDto);
 
     }
 
-    @GetMapping(value = "/polls/result/{pollId}")
-    @ApiOperation("Получение детализации ответов юзера по определенному опросу pollId - опрос.")
-    public UserResultDto findUserResponseByPollId(@PathVariable Long pollId,
+    @GetMapping(value = URL_POLLS_RESULT_USER_ID)
+    @ApiOperation(API_FIND_USER_RESPONSE)
+    public UserResultDto findUserResponseByPollId(@ApiParam(API_POLL_ID)
+                                                  @PathVariable Long pollId,
+                                                  @ApiParam(API_USER_ID)
                                                   @RequestParam Long userId) {
         return userControllerService.findUserResponseByPollId(userId, pollId);
     }
 
-    @GetMapping(value = "/polls/result")
-    @ApiOperation("Получение всех ответов пользователя по всем пройденым опросам. userId - индификатор пользователя.")
-    public List<UserResultDto> findAllUserResponseByUserId(@RequestParam Long userId) {
+    @GetMapping(value = URL_POLLS_RESULT)
+    @ApiOperation(API_FIND_ALL_USER_RESPONSE)
+    public List<UserResultDto> findAllUserResponseByUserId(@ApiParam(API_USER_ID)
+                                                           @RequestParam Long userId) {
         return userControllerService.findAllUserResponseByUserId(userId);
     }
 
