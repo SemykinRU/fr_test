@@ -11,4 +11,6 @@ public class UserAnswerDto {
 
     private String answerText;
 
+    private Long AnswerId;
+
 }

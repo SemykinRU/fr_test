@@ -27,7 +27,7 @@ public class UserResponse {
     private Poll poll;
 
     @OneToMany(mappedBy = "userResponse", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAnswer> answers = new ArrayList<>();
+    private List<UserAnswer> userAnswers = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

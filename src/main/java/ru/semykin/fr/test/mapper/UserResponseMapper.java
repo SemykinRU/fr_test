@@ -10,15 +10,15 @@ import java.util.List;
 @Mapper
 public interface UserResponseMapper {
 
-    @Mapping(target = "answers", ignore = true)
+    @Mapping(target = "userAnswers", ignore = true)
     UserResponseDto toUserResponseDto(UserResponse entity);
 
-    @Mapping(target = "answers", ignore = true)
+    @Mapping(target = "userAnswers", ignore = true)
     UserResponse toUserResponseEntity(UserResponseDto dto);
 
-    @Mapping(target = "answers", ignore = true)
+    @Mapping(target = "userAnswers", ignore = true)
     List<UserResponseDto> toUserResponseDtoList(Iterable<UserResponse> entityIterable);
 
-    @Mapping(target = "answers", ignore = true)
+    @Mapping(target = "userAnswers", ignore = true)
     List<UserResponse> toUserResponseEntityList(Iterable<UserResponseDto> dtoIterable);
 }

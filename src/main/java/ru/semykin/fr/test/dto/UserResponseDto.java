@@ -16,6 +16,10 @@ public class UserResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Moscow")
     private LocalDateTime createDate;
 
-    private List<UserAnswerDto> answers;
+    private Long pollId;
+
+    private Long userId;
+
+    private List<UserAnswerDto> userAnswers;
 
 }

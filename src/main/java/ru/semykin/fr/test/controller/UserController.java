@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.semykin.fr.test.dto.PollDto;
+import ru.semykin.fr.test.dto.UserResultDto;
 import ru.semykin.fr.test.dto.UserResponseDto;
 import ru.semykin.fr.test.service.UserControllerService;
 
@@ -43,14 +44,14 @@ public class UserController {
 
     @GetMapping(value = "/polls/result/{pollId}")
     @ApiOperation("Получение детализации ответов юзера по определенному опросу pollId - опрос.")
-    public UserResponseDto findUserResponseByPollId(@PathVariable Long pollId,
-                                                    @RequestParam Long userId) {
+    public UserResultDto findUserResponseByPollId(@PathVariable Long pollId,
+                                                  @RequestParam Long userId) {
         return userControllerService.findUserResponseByPollId(userId, pollId);
     }
 
     @GetMapping(value = "/polls/result")
     @ApiOperation("Получение всех ответов пользователя по всем пройденым опросам. userId - индификатор пользователя.")
-    public List<UserResponseDto> findAllUserResponseByUserId(@RequestParam Long userId) {
+    public List<UserResultDto> findAllUserResponseByUserId(@RequestParam Long userId) {
         return userControllerService.findAllUserResponseByUserId(userId);
     }
 

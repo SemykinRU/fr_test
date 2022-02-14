@@ -97,10 +97,17 @@ public class PollService {
     }
 
     public List<Poll> findAllActiveEntityPolls() {
+
         return repository.findAllByTimeEndAfter(LocalDateTime.now());
     }
 
     public List<PollDto> findAllActiveDtoPolls() {
-        return pollMapper.toPollDtoList(findAllActiveEntityPolls());
+        final List<Poll> polls = findAllActiveEntityPolls();
+        final List<PollDto> pollsDto = new ArrayList<>();
+        for (Poll poll : polls) {
+            PollDto pollDto = fromPollEntityToPollDto(poll);
+            pollsDto.add(pollDto);
+        }
+        return pollsDto;
     }
 }

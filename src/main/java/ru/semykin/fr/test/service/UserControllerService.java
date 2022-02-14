@@ -1,14 +1,12 @@
 package ru.semykin.fr.test.service;
 
 import lombok.AllArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import ru.semykin.fr.test.dto.PollDto;
 import ru.semykin.fr.test.dto.UserResponseDto;
-import ru.semykin.fr.test.entity.Poll;
-import ru.semykin.fr.test.entity.UserResponse;
-import ru.semykin.fr.test.mapper.PollMapper;
+import ru.semykin.fr.test.dto.UserResultDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,13 +17,18 @@ public class UserControllerService {
 
     private final UserResponseService userResponseService;
 
-    private final PollMapper pollMapper = Mappers.getMapper(PollMapper.class);
-
     public List<PollDto> findAllActivePollsDtoByUserId(Long userId) {
-        List<Poll> activePolls = pollService.findAllActiveEntityPolls();
-        List<UserResponse> userResponses = userResponseService.findAllUserResponseEntityByUserId(userId);
-        activePolls.removeIf(userResponses::contains);
-        return pollMapper.toPollDtoList(activePolls);
+        final List<PollDto> activePolls = pollService.findAllActiveDtoPolls();
+        final List<UserResponseDto> userResponses = userResponseService.findAllUserResponseByUserId(userId);
+        final List<Long> pollsID = new ArrayList<>();
+        for (var userResponseDto : userResponses) {
+            Long id = userResponseDto.getPollId();
+            pollsID.add(id);
+        }
+        for (Long id : pollsID) {
+            activePolls.removeIf(x -> x.getId().equals(id));
+        }
+        return activePolls;
     }
 
     public List<PollDto> findAllActivePolls() {
@@ -37,12 +40,26 @@ public class UserControllerService {
         return userResponseService.saveUserResponseDto(userId, pollId, userResponseDto);
     }
 
-    public UserResponseDto findUserResponseByPollId(Long userId, Long pollId) {
-        return userResponseService.findUserResponseByPollId(userId, pollId);
+    public UserResultDto findUserResponseByPollId(Long userId, Long pollId) {
+        final UserResponseDto userResponseDto = userResponseService.findOneUserResponseOnPollByUserId(userId, pollId);
+        final PollDto pollDto = pollService.findOnePollDtoById(pollId);
+        final UserResultDto userResultDto = new UserResultDto();
+        userResultDto.setPollDto(pollDto);
+        userResultDto.setUserResponseDto(userResponseDto);
+        return userResultDto;
     }
 
-    public List<UserResponseDto> findAllUserResponseByUserId(Long userId) {
-        return userResponseService.findAllUserResponseByUserId(userId);
+    public List<UserResultDto> findAllUserResponseByUserId(Long userId) {
+        final List<UserResponseDto> userResponsesDto = userResponseService.findAllUserResponseByUserId(userId);
+        final List<UserResultDto> userResultsDto = new ArrayList<>();
+        for (var userResponseDto : userResponsesDto) {
+            PollDto pollDto = pollService.findOnePollDtoById(userResponseDto.getPollId());
+            UserResultDto userResultDto = new UserResultDto();
+            userResultDto.setUserResponseDto(userResponseDto);
+            userResultDto.setPollDto(pollDto);
+            userResultsDto.add(userResultDto);
+        }
+        return userResultsDto;
     }
 
 }
