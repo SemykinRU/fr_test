@@ -88,7 +88,9 @@ public class PollService {
 
     public PollDto updatePoll(PollDto pollDto) {
         final Long id = pollDto.getId();
-        findOnePollEntityById(id);
+        final Poll poll = findOnePollEntityById(id);
+        final LocalDateTime start = poll.getTimeStart();
+        pollDto.setTimeStart(start);
         return savePoll(pollDto);
     }
 

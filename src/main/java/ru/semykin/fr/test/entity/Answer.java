@@ -2,7 +2,6 @@ package ru.semykin.fr.test.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Objects;
